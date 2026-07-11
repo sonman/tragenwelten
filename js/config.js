@@ -6,8 +6,8 @@
  *   tragenwelt_sheet_name
  */
 const DEFAULTS = {
-  CLIENT_ID: '219640143150-h2gb3ds031fu574ku25rjks9i4qlgnk1.apps.googleusercontent.com',
-  SPREADSHEET_ID: '11Cbr47Bf6BiWVsZPnT7k4YHztUZwstEHq_wmVuSKNik',
+  CLIENT_ID: '791761767935-m1cqk76ro2b8vut7ls49rt5cgf8onjch.apps.googleusercontent.com',
+  SPREADSHEET_ID: '1kw0e_ukjpQQDEMcmRTAKmmljJ6lQxZ2gMjZkswyyq60',
   SHEET_NAME: 'Inventory',
   SCOPES: 'https://www.googleapis.com/auth/spreadsheets',
 };
