@@ -1,0 +1,7 @@
+id,name,kaufdatum,kaufplatform,kaufpreis,status,verkaufdatum,verkaufpreis,verkaufplatform,showapp
+,,,,,,,,,
+1,Ergobaby super1,11.07.2026,Kleinanzeigen,30,verkauft,11.07.2026,80,Kleinanzeigen,x
+2,Tragik,12.07.2026,Vinted,40,erhalten,,,,x
+3,Holun,13.07.2026,Kleinanzeigen,20,gekauft,,,,x
+4,Hebel,14.07.2026,Kleinanzeigen,50,gekauft,,,,x
+5,Holgi,10.07.2026,Kleinanzeigen,10,verkauft,11.07.2026,100,Vinted,
