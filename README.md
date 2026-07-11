@@ -32,7 +32,7 @@ tragenwelt/
 
 ## Google Sheet vorbereiten
 
-1. Erstelle ein Google Sheet mit dem Tab **`Tabellenblatt1`** (oder passe den Namen in der Config an).
+1. Erstelle ein Google Sheet mit dem Tab **`Inventory`** (oder passe den Namen in der Config an).
 2. Zeile 1 enthält die Spaltenüberschriften:
 
    | A | B | C | D | E | F | G | H | I | J |
@@ -74,7 +74,7 @@ In [`js/config.js`](js/config.js) eintragen:
 ```javascript
 CLIENT_ID: '123456789-xxxx.apps.googleusercontent.com',
 SPREADSHEET_ID: 'deine-spreadsheet-id',
-SHEET_NAME: 'Tabellenblatt1',
+SHEET_NAME: 'Inventory',
 ```
 
 Alternativ per Browser-Konsole / localStorage (ohne Code-Änderung):
@@ -82,7 +82,7 @@ Alternativ per Browser-Konsole / localStorage (ohne Code-Änderung):
 ```javascript
 localStorage.setItem('tragenwelt_client_id', 'DEINE_CLIENT_ID');
 localStorage.setItem('tragenwelt_spreadsheet_id', 'DEINE_SPREADSHEET_ID');
-localStorage.setItem('tragenwelt_sheet_name', 'Tabellenblatt1');
+localStorage.setItem('tragenwelt_sheet_name', 'Inventory');
 ```
 
 ## Lokal testen
