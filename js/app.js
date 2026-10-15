@@ -20,6 +20,7 @@ import {
   sortById,
   escapeHtml,
   isoToGermanDate,
+  toGermanDecimal,
   todayIso,
   todayGerman,
 } from './utils.js';
@@ -330,7 +331,7 @@ async function handleAddItem(event) {
   event.preventDefault();
   const formData = new FormData(els.formAdd);
   const name = String(formData.get('name') || '').trim();
-  const kaufpreis = String(formData.get('kaufpreis') || '').trim();
+  const kaufpreis = toGermanDecimal(formData.get('kaufpreis'));
   const kaufplatform = String(formData.get('kaufplatform') || '').trim();
   const kaufdatum = isoToGermanDate(String(formData.get('kaufdatum') || ''));
 
@@ -413,7 +414,7 @@ async function handleSellItem(event) {
 
   const formData = new FormData(els.formSell);
   const verkaufdatum = isoToGermanDate(String(formData.get('verkaufdatum') || ''));
-  const verkaufpreis = String(formData.get('verkaufpreis') || '').trim();
+  const verkaufpreis = toGermanDecimal(formData.get('verkaufpreis'));
   const verkaufplatform = String(formData.get('verkaufplatform') || '').trim();
 
   if (!verkaufdatum || !verkaufpreis || !verkaufplatform) {

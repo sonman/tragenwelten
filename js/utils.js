@@ -61,11 +61,44 @@ export function todayGerman() {
   return formatGermanDate(new Date());
 }
 
+export function toGermanDecimal(value) {
+  return String(value ?? '').trim().replace('.', ',');
+}
+
+function parseEuroCents(value) {
+  const raw = String(value).trim();
+  if (!raw) return null;
+  let unsigned = raw.replace(/€/g, '').replace(/\bEUR\b/gi, '').replace(/\s/g, '');
+  const negative = unsigned.startsWith('-') || unsigned.startsWith('−');
+  if (negative) unsigned = unsigned.slice(1);
+  const comma = unsigned.lastIndexOf(',');
+  const dot = unsigned.lastIndexOf('.');
+  if (comma !== -1 && dot !== -1) {
+    unsigned = comma > dot
+      ? unsigned.replaceAll('.', '').replace(',', '.')
+      : unsigned.replaceAll(',', '');
+  } else if (comma !== -1) {
+    unsigned = unsigned.replace(',', '.');
+  }
+  if (!/^\d+(\.\d+)?$/.test(unsigned)) return Number.NaN;
+
+  const [wholePart, fracPart = ''] = unsigned.split('.');
+  const digits = `${fracPart}000`;
+  let cents = Number(wholePart) * 100 + Number(digits.slice(0, 2));
+  if (digits[2] >= '5') cents += 1;
+  return negative ? -cents : cents;
+}
+
 export function formatEuro(value) {
   if (value === '' || value == null) return '—';
-  const number = Number.parseFloat(String(value).replace(',', '.'));
-  if (!Number.isFinite(number)) return `${value} €`;
-  return `${number.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} €`;
+  const cents = parseEuroCents(value);
+  if (cents == null) return '—';
+  if (!Number.isFinite(cents)) return `${value} €`;
+  const fractionDigits = cents % 100 === 0 ? 0 : 2;
+  return `${(cents / 100).toLocaleString('de-DE', {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  })} €`;
 }
 
 export function truncate(text, length) {
