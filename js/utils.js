@@ -138,16 +138,25 @@ export function isVisibleInApp(item) {
   return showapp === 'x' || showapp === '1' || showapp === 'true' || showapp === 'yes';
 }
 
-export function sortById(items) {
+function compareId(a, b) {
+  const idA = Number.parseInt(String(a.id), 10);
+  const idB = Number.parseInt(String(b.id), 10);
+  const finiteA = Number.isFinite(idA);
+  const finiteB = Number.isFinite(idB);
+  if (!finiteA && !finiteB) return 0;
+  if (!finiteA) return 1;
+  if (!finiteB) return -1;
+  return idA - idB;
+}
+
+export function sortOldestFirst(items) {
   return [...items].sort((a, b) => {
-    const idA = Number.parseInt(String(a.id), 10);
-    const idB = Number.parseInt(String(b.id), 10);
-    const finiteA = Number.isFinite(idA);
-    const finiteB = Number.isFinite(idB);
-    if (!finiteA && !finiteB) return 0;
-    if (!finiteA) return 1;
-    if (!finiteB) return -1;
-    return idA - idB;
+    const dateA = parseGermanDate(a.kaufdatum);
+    const dateB = parseGermanDate(b.kaufdatum);
+    if (dateA && dateB && dateA.getTime() !== dateB.getTime()) return dateA - dateB;
+    if (!dateA && dateB) return 1;
+    if (dateA && !dateB) return -1;
+    return compareId(a, b);
   });
 }
 

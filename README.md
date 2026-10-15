@@ -201,7 +201,7 @@ Die App startet dann wie eine native App im Vollbildmodus.
 | gereinigt | Gelb |
 | verpackt | Limette |
 | online | Hellgrün |
-| verkauft | Grün |
+| verkauft | Blau |
 
 ## Hinweise
 

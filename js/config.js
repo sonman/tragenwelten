@@ -1,7 +1,8 @@
 /**
  * Tragenwelt configuration.
- * DEFAULTS_LOCAL is used when the URL has ?local or a `.local` file
- * exists next to index.html. Otherwise DEFAULTS is used.
+ * ?shared selects DEFAULTS_MARTIN_VIA_MARIE.
+ * ?local selects DEFAULTS_LOCAL.
+ * Otherwise DEFAULTS is used.
  * Override at runtime via localStorage keys:
  *   tragenwelt_client_id
  *   tragenwelt_spreadsheet_id
@@ -17,6 +18,7 @@ const DEFAULTS = {
 };
 
 // Martin
+// via ?local
 const DEFAULTS_LOCAL = {
   CLIENT_ID: '219640143150-h2gb3ds031fu574ku25rjks9i4qlgnk1.apps.googleusercontent.com',
   SPREADSHEET_ID: '11Cbr47Bf6BiWVsZPnT7k4YHztUZwstEHq_wmVuSKNik',
@@ -24,22 +26,26 @@ const DEFAULTS_LOCAL = {
   SCOPES: 'https://www.googleapis.com/auth/spreadsheets',
 };
 
-function localParamSet() {
-  return new URLSearchParams(window.location.search).has('local');
+// Marie via Martin
+// via ?shared
+const DEFAULTS_MARTIN_VIA_MARIE = {
+  CLIENT_ID: '219640143150-h2gb3ds031fu574ku25rjks9i4qlgnk1.apps.googleusercontent.com',
+  SPREADSHEET_ID: '1kw0e_ukjpQQDEMcmRTAKmmljJ6lQxZ2gMjZkswyyq60',
+  SHEET_NAME: 'Inventory',
+  SCOPES: 'https://www.googleapis.com/auth/spreadsheets',
+};
+
+function searchParamSet(name) {
+  return new URLSearchParams(window.location.search).has(name);
 }
 
-async function localFileExists() {
-  try {
-    const response = await fetch(new URL('../.local', import.meta.url), {
-      cache: 'no-store',
-    });
-    return response.ok;
-  } catch {
-    return false;
-  }
+function selectDefaults() {
+  if (searchParamSet('shared')) return DEFAULTS_MARTIN_VIA_MARIE;
+  if (searchParamSet('local')) return DEFAULTS_LOCAL;
+  return DEFAULTS;
 }
 
-const defaults = localParamSet() || (await localFileExists()) ? DEFAULTS_LOCAL : DEFAULTS;
+const defaults = selectDefaults();
 
 function fromStorage(key, fallback) {
   const value = localStorage.getItem(key);
@@ -87,7 +93,7 @@ export const STATUS_COLORS = {
   gereinigt: '#FDD835',
   verpackt: '#C0CA33',
   online: '#7CB342',
-  verkauft: '#43A047',
+  verkauft: '#1E88E5',
 };
 
 export const PLATFORMS = ['Kleinanzeigen', 'Vinted'];

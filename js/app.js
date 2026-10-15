@@ -17,7 +17,7 @@ import {
   isVisibleInApp,
   filterByStatus,
   countByStatus,
-  sortById,
+  sortOldestFirst,
   escapeHtml,
   isoToGermanDate,
   toGermanDecimal,
@@ -91,7 +91,7 @@ function getSelectedItem() {
 
 function getVisibleItems() {
   const visible = state.items.filter(isVisibleInApp);
-  return sortById(filterByStatus(visible, state.statusFilter));
+  return sortOldestFirst(filterByStatus(visible, state.statusFilter));
 }
 
 function showScreen(name) {
