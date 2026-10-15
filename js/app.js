@@ -111,11 +111,12 @@ function renderInventory() {
 
   hide(els.inventoryEmpty);
 
-  items.forEach((item) => {
+  items.forEach((item, index) => {
     const li = document.createElement('li');
     li.className = 'inventory-item';
     li.dataset.id = item.id;
     li.innerHTML = `
+      <span class="item-index">#${index + 1}</span>
       <span class="item-date">${escapeHtml(formatDateShort(item.kaufdatum))}</span>
       <span class="item-name">${escapeHtml(truncate(item.name, 12))}</span>
       <span class="item-price">${escapeHtml(formatEuro(item.kaufpreis))}</span>
