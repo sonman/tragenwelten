@@ -43,15 +43,23 @@
     <section id="screen-details" class="screen hidden">
       <header class="app-header with-back">
         <button type="button" id="btn-back" class="icon-btn" aria-label="Zurück">←</button>
-        <div>
-            <h1><p id="details-title"></p></h1>
+        <div class="details-heading">
+          <h1 id="details-title"></h1>
+          <button type="button" id="btn-hide" class="icon-btn icon-btn-danger" aria-label="In App ausblenden">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"></path>
+              <path d="M8 6V4h8v2"></path>
+              <path d="M19 6l-1 14H6L5 6"></path>
+              <path d="M10 11v6"></path>
+              <path d="M14 11v6"></path>
+            </svg>
+          </button>
         </div>
       </header>
       <main class="screen-body">
         <dl id="details-fields" class="details-fields"></dl>
       </main>
-      <footer class="details-footer">
-        <button type="button" id="btn-hide" class="btn btn-secondary">In App ausblenden</button>
+      <footer id="details-footer" class="details-footer">
         <button type="button" id="btn-next-status" class="btn btn-primary hidden"></button>
       </footer>
     </section>
@@ -89,6 +97,21 @@
           <button type="submit" class="btn btn-primary">Speichern</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div id="modal-hide" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-hide-title">
+    <div class="modal-backdrop" data-close="modal-hide"></div>
+    <div class="modal-card">
+      <header class="modal-header">
+        <h2 id="modal-hide-title">In App ausblenden?</h2>
+        <button type="button" class="icon-btn modal-close" data-close="modal-hide" aria-label="Schließen">×</button>
+      </header>
+      <p id="modal-hide-text" class="modal-text"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-close="modal-hide">Abbrechen</button>
+        <button type="button" id="btn-hide-confirm" class="btn btn-danger">Ausblenden</button>
+      </div>
     </div>
   </div>
 

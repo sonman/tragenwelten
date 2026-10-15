@@ -1,2 +1,5 @@
-* serve on localhost port 8080 only (needed for oauth origin)
+* port allocations
+  * localhost:8080 (for manual testing)
+  * localhost:9090 (for automatic testing, can be used by ai/cursor)
 * mobile first app
+* do not do preview (auth will hinder this)

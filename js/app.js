@@ -17,7 +17,7 @@ import {
   isVisibleInApp,
   filterByStatus,
   countByStatus,
-  sortByKaufdatum,
+  sortById,
   escapeHtml,
   isoToGermanDate,
   todayIso,
@@ -47,6 +47,10 @@ const els = {
   detailsTitle: document.getElementById('details-title'),
   detailsFields: document.getElementById('details-fields'),
   btnHide: document.getElementById('btn-hide'),
+  btnHideConfirm: document.getElementById('btn-hide-confirm'),
+  modalHide: document.getElementById('modal-hide'),
+  modalHideText: document.getElementById('modal-hide-text'),
+  detailsFooter: document.getElementById('details-footer'),
   btnNextStatus: document.getElementById('btn-next-status'),
   modalAdd: document.getElementById('modal-add'),
   formAdd: document.getElementById('form-add'),
@@ -86,7 +90,7 @@ function getSelectedItem() {
 
 function getVisibleItems() {
   const visible = state.items.filter(isVisibleInApp);
-  return sortByKaufdatum(filterByStatus(visible, state.statusFilter));
+  return sortById(filterByStatus(visible, state.statusFilter));
 }
 
 function showScreen(name) {
@@ -233,8 +237,10 @@ function renderDetails() {
   if (nextStatus) {
     els.btnNextStatus.textContent = `→ ${nextStatus}`;
     show(els.btnNextStatus);
+    show(els.detailsFooter);
   } else {
     hide(els.btnNextStatus);
+    hide(els.detailsFooter);
   }
 }
 
@@ -354,12 +360,22 @@ async function handleAddItem(event) {
   });
 }
 
-async function handleHideItem() {
+function handleHideItem() {
+  const item = getSelectedItem();
+  if (!item) return;
+
+  const name = item.name || 'Dieser Artikel';
+  els.modalHideText.textContent = `„${name}“ wird in der App nicht mehr angezeigt.`;
+  openModal(els.modalHide);
+}
+
+async function confirmHideItem() {
   const item = getSelectedItem();
   if (!item) return;
 
   await withLoading(async () => {
     await hideItem(item._row);
+    closeModal(els.modalHide);
     await refreshItems();
     state.selectedId = null;
     showScreen('inventory');
@@ -385,7 +401,6 @@ async function handleNextStatus() {
     await updateStatus(item._row, nextStatus);
     item.status = nextStatus;
     await refreshItems();
-    showToast(`Status: ${nextStatus}`);
   });
 }
 
@@ -409,7 +424,6 @@ async function handleSellItem(event) {
     closeModal(els.modalSell);
     state.pendingStatus = null;
     await refreshItems();
-    showToast('Als verkauft markiert.');
   });
 }
 
@@ -427,6 +441,7 @@ function bindEvents() {
   });
 
   els.btnHide.addEventListener('click', handleHideItem);
+  els.btnHideConfirm.addEventListener('click', confirmHideItem);
   els.btnNextStatus.addEventListener('click', handleNextStatus);
 
   els.formAdd.addEventListener('submit', handleAddItem);

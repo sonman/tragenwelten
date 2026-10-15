@@ -105,14 +105,16 @@ export function isVisibleInApp(item) {
   return showapp === 'x' || showapp === '1' || showapp === 'true' || showapp === 'yes';
 }
 
-export function sortByKaufdatum(items) {
+export function sortById(items) {
   return [...items].sort((a, b) => {
-    const dateA = parseGermanDate(a.kaufdatum);
-    const dateB = parseGermanDate(b.kaufdatum);
-    if (!dateA && !dateB) return 0;
-    if (!dateA) return 1;
-    if (!dateB) return -1;
-    return dateA - dateB;
+    const idA = Number.parseInt(String(a.id), 10);
+    const idB = Number.parseInt(String(b.id), 10);
+    const finiteA = Number.isFinite(idA);
+    const finiteB = Number.isFinite(idB);
+    if (!finiteA && !finiteB) return 0;
+    if (!finiteA) return 1;
+    if (!finiteB) return -1;
+    return idA - idB;
   });
 }
 
