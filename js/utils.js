@@ -80,6 +80,26 @@ export function getNextStatus(current) {
   return STATUS_ORDER[index + 1];
 }
 
+export function itemStatus(item) {
+  return String(item.status || '').trim().toLowerCase();
+}
+
+export function filterByStatus(items, status) {
+  const wanted = String(status || '').trim().toLowerCase();
+  if (!wanted) return items;
+  return items.filter((item) => itemStatus(item) === wanted);
+}
+
+export function countByStatus(items) {
+  const counts = {};
+  items.forEach((item) => {
+    const status = itemStatus(item);
+    if (!status) return;
+    counts[status] = (counts[status] || 0) + 1;
+  });
+  return counts;
+}
+
 export function isVisibleInApp(item) {
   const showapp = String(item.showapp || '').trim().toLowerCase();
   return showapp === 'x' || showapp === '1' || showapp === 'true' || showapp === 'yes';

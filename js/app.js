@@ -1,4 +1,4 @@
-import { CONFIG, FIELD_LABELS, STATUS_COLORS } from './config.js';
+import { CONFIG, FIELD_LABELS, STATUS_COLORS, STATUS_ORDER } from './config.js';
 import { signIn, isConfigured } from './auth.js';
 import {
   getAllItems,
@@ -15,6 +15,8 @@ import {
   truncate,
   getNextStatus,
   isVisibleInApp,
+  filterByStatus,
+  countByStatus,
   sortByKaufdatum,
   escapeHtml,
   isoToGermanDate,
@@ -26,6 +28,7 @@ const state = {
   items: [],
   selectedId: null,
   pendingStatus: null,
+  statusFilter: '',
 };
 
 const els = {
@@ -38,6 +41,7 @@ const els = {
   screenDetails: document.getElementById('screen-details'),
   inventoryList: document.getElementById('inventory-list'),
   inventoryEmpty: document.getElementById('inventory-empty'),
+  statusFilters: document.getElementById('status-filters'),
   btnAdd: document.getElementById('btn-add'),
   btnBack: document.getElementById('btn-back'),
   detailsTitle: document.getElementById('details-title'),
@@ -81,7 +85,8 @@ function getSelectedItem() {
 }
 
 function getVisibleItems() {
-  return sortByKaufdatum(state.items.filter(isVisibleInApp));
+  const visible = state.items.filter(isVisibleInApp);
+  return sortByKaufdatum(filterByStatus(visible, state.statusFilter));
 }
 
 function showScreen(name) {
@@ -100,11 +105,69 @@ function statusBadgeHtml(status) {
   return `<span class="${className}">${safeStatus}</span>`;
 }
 
+function statusLabel(status) {
+  return status.charAt(0).toUpperCase() + status.slice(1);
+}
+
+function syncStatusFilters() {
+  const counts = countByStatus(state.items.filter(isVisibleInApp));
+  els.statusFilters.querySelectorAll('.status-chip').forEach((button) => {
+    const selected = button.dataset.status === state.statusFilter;
+    button.classList.toggle('is-selected', selected);
+    button.setAttribute('aria-checked', selected ? 'true' : 'false');
+    const countEl = button.querySelector('.status-chip-count');
+    if (countEl) countEl.textContent = String(counts[button.dataset.status] || 0);
+  });
+}
+
+function buildStatusFilters() {
+  const options = [
+    { status: '', label: 'Alle' },
+    ...STATUS_ORDER.map((status) => ({ status, label: statusLabel(status) })),
+  ];
+
+  options.forEach(({ status, label }) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = status ? `status-chip status-${status}` : 'status-chip is-all';
+    button.dataset.status = status;
+    button.setAttribute('role', 'radio');
+    if (status) {
+      const dot = document.createElement('span');
+      dot.className = 'status-chip-dot';
+      dot.setAttribute('aria-hidden', 'true');
+      button.append(dot);
+    }
+    const name = document.createElement('span');
+    name.textContent = label;
+    button.append(name);
+    if (status) {
+      const count = document.createElement('span');
+      count.className = 'status-chip-count';
+      count.textContent = '0';
+      button.append(count);
+    }
+    button.addEventListener('click', () => {
+      state.statusFilter = status;
+      syncStatusFilters();
+      renderInventory();
+    });
+    els.statusFilters.appendChild(button);
+  });
+
+  syncStatusFilters();
+}
+
 function renderInventory() {
+  syncStatusFilters();
   const items = getVisibleItems();
+  const hasItems = state.items.some(isVisibleInApp);
   els.inventoryList.innerHTML = '';
 
   if (!items.length) {
+    els.inventoryEmpty.textContent = hasItems
+      ? 'Keine Einträge mit diesem Status.'
+      : 'Noch keine Einträge.';
     show(els.inventoryEmpty);
     return;
   }
@@ -390,6 +453,7 @@ function registerServiceWorker() {
 }
 
 bindEvents();
+buildStatusFilters();
 resetAddForm();
 resetSellForm();
 registerServiceWorker();

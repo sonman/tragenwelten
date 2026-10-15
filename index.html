@@ -30,9 +30,9 @@
 
     <section id="screen-inventory" class="screen hidden">
       <header class="app-header">
-        <h1>Tragenwelt</h1>
-        <p class="subtitle">Inventar</p>
+        <h1>Meine Tragenwelt</h1>
       </header>
+      <div id="status-filters" class="status-filters" role="radiogroup" aria-label="Status"></div>
       <main class="screen-body inventory-body">
         <ul id="inventory-list" class="inventory-list"></ul>
         <p id="inventory-empty" class="empty-state hidden">Noch keine Einträge.</p>
@@ -44,15 +44,14 @@
       <header class="app-header with-back">
         <button type="button" id="btn-back" class="icon-btn" aria-label="Zurück">←</button>
         <div>
-          <h1>Details</h1>
-          <p id="details-title" class="subtitle"></p>
+            <h1><p id="details-title"></p></h1>
         </div>
       </header>
       <main class="screen-body">
         <dl id="details-fields" class="details-fields"></dl>
       </main>
       <footer class="details-footer">
-        <button type="button" id="btn-hide" class="btn btn-secondary">Ausblenden</button>
+        <button type="button" id="btn-hide" class="btn btn-secondary">In App ausblenden</button>
         <button type="button" id="btn-next-status" class="btn btn-primary hidden"></button>
       </footer>
     </section>

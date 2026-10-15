@@ -171,6 +171,91 @@ body {
   z-index: 0;
 }
 
+.status-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 16px 14px;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+}
+
+.status-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.status-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.status-chip:focus-visible {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 2px;
+}
+
+.status-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex: 0 0 auto;
+}
+
+.status-chip-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.status-chip.status-gekauft .status-chip-dot { background: var(--status-gekauft); }
+.status-chip.status-erhalten .status-chip-dot { background: var(--status-erhalten); }
+.status-chip.status-gereinigt .status-chip-dot { background: var(--status-gereinigt); }
+.status-chip.status-verpackt .status-chip-dot { background: var(--status-verpackt); }
+.status-chip.status-online .status-chip-dot { background: var(--status-online); }
+.status-chip.status-verkauft .status-chip-dot { background: var(--status-verkauft); }
+
+.status-chip.is-selected {
+  border-color: transparent;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.status-chip.is-selected .status-chip-dot {
+  display: none;
+}
+
+.status-chip.is-all.is-selected {
+  background: var(--text);
+}
+
+.status-chip.is-selected.status-gekauft { background: var(--status-gekauft); }
+.status-chip.is-selected.status-erhalten { background: var(--status-erhalten); }
+.status-chip.is-selected.status-gereinigt {
+  background: var(--status-gereinigt);
+  color: #4a452f;
+  text-shadow: none;
+}
+.status-chip.is-selected.status-verpackt {
+  background: var(--status-verpackt);
+  color: #3a4018;
+  text-shadow: none;
+}
+.status-chip.is-selected.status-online { background: var(--status-online); }
+.status-chip.is-selected.status-verkauft { background: var(--status-verkauft); }
+
 .inventory-list {
   list-style: none;
   margin: 0;
@@ -242,12 +327,12 @@ body {
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
 }
 
-.status-gekauft { background: var(--status-gekauft); }
-.status-erhalten { background: var(--status-erhalten); }
-.status-gereinigt { background: var(--status-gereinigt); color: #4a452f; text-shadow: none; }
-.status-verpackt { background: var(--status-verpackt); color: #3a4018; text-shadow: none; }
-.status-online { background: var(--status-online); }
-.status-verkauft { background: var(--status-verkauft); }
+.status-badge.status-gekauft { background: var(--status-gekauft); }
+.status-badge.status-erhalten { background: var(--status-erhalten); }
+.status-badge.status-gereinigt { background: var(--status-gereinigt); color: #4a452f; text-shadow: none; }
+.status-badge.status-verpackt { background: var(--status-verpackt); color: #3a4018; text-shadow: none; }
+.status-badge.status-online { background: var(--status-online); }
+.status-badge.status-verkauft { background: var(--status-verkauft); }
 
 .empty-state {
   text-align: center;
