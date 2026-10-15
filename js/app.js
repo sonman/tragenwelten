@@ -12,7 +12,6 @@ import {
   formatDateShort,
   formatDateDisplay,
   formatEuro,
-  truncate,
   getNextStatus,
   isVisibleInApp,
   filterByStatus,
@@ -186,7 +185,7 @@ function renderInventory() {
     li.innerHTML = `
       <span class="item-index">#${escapeHtml(item.id)}</span>
       <span class="item-date">${escapeHtml(formatDateShort(item.kaufdatum))}</span>
-      <span class="item-name">${escapeHtml(truncate(item.name, 12))}</span>
+      <span class="item-name">${escapeHtml(item.name || '')}</span>
       <span class="item-price">${escapeHtml(formatEuro(item.kaufpreis))}</span>
       ${statusBadgeHtml(item.status)}
     `;

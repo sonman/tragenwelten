@@ -334,9 +334,9 @@ body {
 .item-name {
   font-weight: 700;
   color: var(--primary-dark);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  min-width: 0;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .item-price {

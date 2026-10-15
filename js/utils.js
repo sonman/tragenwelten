@@ -101,12 +101,6 @@ export function formatEuro(value) {
   })} €`;
 }
 
-export function truncate(text, length) {
-  const value = String(text || '');
-  if (value.length <= length) return value;
-  return value.slice(0, length);
-}
-
 export function getNextStatus(current) {
   const index = STATUS_ORDER.indexOf(current);
   if (index < 0 || index >= STATUS_ORDER.length - 1) return null;
