@@ -256,6 +256,13 @@ function openModal(modal) {
   show(modal);
 }
 
+function openAddModal() {
+  resetAddForm();
+  openModal(els.modalAdd);
+  // Focus during the tap so the mobile keyboard opens with the dialog.
+  els.formAdd.elements.name.focus();
+}
+
 function closeModal(modal) {
   hide(modal);
 }
@@ -432,10 +439,7 @@ async function handleSellItem(event) {
 function bindEvents() {
   els.btnSignIn.addEventListener('click', handleSignIn);
 
-  els.btnAdd.addEventListener('click', () => {
-    resetAddForm();
-    openModal(els.modalAdd);
-  });
+  els.btnAdd.addEventListener('click', openAddModal);
 
   els.btnBack.addEventListener('click', () => {
     state.selectedId = null;
