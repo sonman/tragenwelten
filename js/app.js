@@ -210,7 +210,7 @@ function renderDetails() {
   const item = getSelectedItem();
   if (!item) return;
 
-  els.detailsTitle.textContent = item.name || '';
+  els.detailsTitle.textContent = `#${item.id} ${item.name || ''}`.trim();
   const fields = [
     renderField(FIELD_LABELS.id, item.id),
     renderField(FIELD_LABELS.name, item.name),
@@ -234,8 +234,10 @@ function renderDetails() {
   els.detailsFields.innerHTML = fields.join('');
 
   const nextStatus = getNextStatus(item.status);
+  STATUS_ORDER.forEach((status) => els.btnNextStatus.classList.remove(`status-${status}`));
   if (nextStatus) {
     els.btnNextStatus.textContent = `→ ${nextStatus}`;
+    els.btnNextStatus.classList.add(`status-${nextStatus}`);
     show(els.btnNextStatus);
     show(els.detailsFooter);
   } else {
