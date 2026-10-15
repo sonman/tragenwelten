@@ -53,6 +53,20 @@ body {
   flex-direction: column;
 }
 
+#screen-inventory {
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+#screen-inventory > .app-header,
+#screen-inventory > .status-filters {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
+}
+
 .screen-body {
   flex: 1;
   overflow-y: auto;
@@ -175,6 +189,8 @@ body {
 
 .inventory-body {
   position: relative;
+  min-height: 0;
+  overscroll-behavior: contain;
 }
 
 .inventory-body::before {
