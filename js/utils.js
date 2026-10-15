@@ -143,15 +143,8 @@ function compareId(a, b) {
   return idA - idB;
 }
 
-export function sortOldestFirst(items) {
-  return [...items].sort((a, b) => {
-    const dateA = parseGermanDate(a.kaufdatum);
-    const dateB = parseGermanDate(b.kaufdatum);
-    if (dateA && dateB && dateA.getTime() !== dateB.getTime()) return dateA - dateB;
-    if (!dateA && dateB) return 1;
-    if (dateA && !dateB) return -1;
-    return compareId(a, b);
-  });
+export function sortById(items) {
+  return [...items].sort(compareId);
 }
 
 export function escapeHtml(text) {
