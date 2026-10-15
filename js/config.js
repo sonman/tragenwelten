@@ -1,7 +1,7 @@
 /**
  * Tragenwelt configuration.
- * If a `.local` file exists next to index.html, DEFAULTS_LOCAL is used.
- * Otherwise DEFAULTS is used.
+ * DEFAULTS_LOCAL is used when the URL has ?local or a `.local` file
+ * exists next to index.html. Otherwise DEFAULTS is used.
  * Override at runtime via localStorage keys:
  *   tragenwelt_client_id
  *   tragenwelt_spreadsheet_id
@@ -24,6 +24,10 @@ const DEFAULTS_LOCAL = {
   SCOPES: 'https://www.googleapis.com/auth/spreadsheets',
 };
 
+function localParamSet() {
+  return new URLSearchParams(window.location.search).has('local');
+}
+
 async function localFileExists() {
   try {
     const response = await fetch(new URL('../.local', import.meta.url), {
@@ -35,7 +39,7 @@ async function localFileExists() {
   }
 }
 
-const defaults = (await localFileExists()) ? DEFAULTS_LOCAL : DEFAULTS;
+const defaults = localParamSet() || (await localFileExists()) ? DEFAULTS_LOCAL : DEFAULTS;
 
 function fromStorage(key, fallback) {
   const value = localStorage.getItem(key);
