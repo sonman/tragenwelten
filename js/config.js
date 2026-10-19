@@ -88,12 +88,12 @@ export const STATUS_ORDER = [
 ];
 
 export const STATUS_COLORS = {
-  gekauft: '#E53935',
-  erhalten: '#FB8C00',
-  gereinigt: '#FDD835',
-  verpackt: '#C0CA33',
-  online: '#7CB342',
-  verkauft: '#1E88E5',
+  gekauft: '#8E24AA',
+  erhalten: '#E53935',
+  gereinigt: '#FB8C00',
+  verpackt: '#FDD835',
+  online: '#9CCC65',
+  verkauft: '#2E7D32',
 };
 
 export const PLATFORMS = ['Kleinanzeigen', 'Vinted'];

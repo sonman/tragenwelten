@@ -196,12 +196,12 @@ Die App startet dann wie eine native App im Vollbildmodus.
 
 | Status | Farbe |
 |--------|-------|
-| gekauft | Rot |
-| erhalten | Orange |
-| gereinigt | Gelb |
-| verpackt | Limette |
+| gekauft | Lila |
+| erhalten | Rot |
+| gereinigt | Orange |
+| verpackt | Gelb |
 | online | Hellgrün |
-| verkauft | Blau |
+| verkauft | Dunkelgrün |
 
 ## Hinweise
 
