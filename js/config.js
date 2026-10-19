@@ -75,6 +75,7 @@ export const COLUMNS = [
   'verkaufdatum',
   'verkaufpreis',
   'verkaufplatform',
+  'zahlungsart',
   'showapp',
 ];
 
@@ -98,6 +99,13 @@ export const STATUS_COLORS = {
 
 export const PLATFORMS = ['Kleinanzeigen', 'Vinted'];
 
+export const PAYMENT_METHODS = [
+  'Vinted Direkt',
+  'Überweisung',
+  'PapPal Waren',
+  'Kleinanzeigen Direkt',
+];
+
 export const FIELD_LABELS = {
   id: 'ID',
   name: 'Name',
@@ -108,4 +116,5 @@ export const FIELD_LABELS = {
   verkaufdatum: 'Verkaufdatum',
   verkaufpreis: 'Verkaufpreis',
   verkaufplatform: 'Verkaufsplattform',
+  zahlungsart: 'Zahlungsart',
 };

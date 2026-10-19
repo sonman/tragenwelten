@@ -35,9 +35,11 @@ tragenwelt/
 1. Erstelle ein Google Sheet mit dem Tab **`Inventory`** (oder passe den Namen in der Config an).
 2. Zeile 1 enthält die Spaltenüberschriften:
 
-   | A | B | C | D | E | F | G | H | I | J |
-   |---|---|---|---|---|---|---|---|---|---|
-   | id | name | kaufdatum | kaufplatform | kaufpreis | status | verkaufdatum | verkaufpreis | verkaufplatform | showapp |
+   | A | B | C | D | E | F | G | H | I | J | K |
+   |---|---|---|---|---|---|---|---|---|---|---|
+   | id | name | kaufdatum | kaufplatform | kaufpreis | status | verkaufdatum | verkaufpreis | verkaufplatform | zahlungsart | showapp |
+
+`zahlungsart` gilt bei Status `verkauft`. Erlaubte Werte: `Vinted Direkt`, `Überweisung`, `PapPal Waren`, `Kleinanzeigen Direkt`.
 
 3. Daten ab Zeile 2 eintragen. `showapp` = `x` zeigt den Artikel in der App.
 4. Die **Spreadsheet ID** findest du in der URL:

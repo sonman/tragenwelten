@@ -3,6 +3,14 @@ import { getAccessToken } from './auth.js';
 
 const API_BASE = 'https://sheets.googleapis.com/v4/spreadsheets';
 
+function columnLetter(index) {
+  return String.fromCharCode('A'.charCodeAt(0) + index);
+}
+
+function lastColumnLetter() {
+  return columnLetter(COLUMNS.length - 1);
+}
+
 function sheetRange(fromCol, toCol, rowStart, rowEnd) {
   const sheet = CONFIG.SHEET_NAME;
   if (rowEnd) {
@@ -43,7 +51,7 @@ function rowToItem(values, rowNumber) {
 }
 
 export async function getAllItems() {
-  const data = await apiFetch(`/values/${encodeURIComponent(sheetRange('A', 'J', 2))}`);
+  const data = await apiFetch(`/values/${encodeURIComponent(sheetRange('A', lastColumnLetter(), 2))}`);
   const rows = data.values || [];
 
   return rows
@@ -53,7 +61,7 @@ export async function getAllItems() {
 
 export async function appendItem(item) {
   const values = COLUMNS.map((key) => item[key] ?? '');
-  const range = sheetRange('A', 'J', 2);
+  const range = sheetRange('A', lastColumnLetter(), 2);
 
   await apiFetch(
     `/values/${encodeURIComponent(range)}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
@@ -70,7 +78,7 @@ export async function updateItemCells(rowNumber, updates) {
     if (colIndex < 0) {
       throw new Error(`Unbekannte Spalte: ${key}`);
     }
-    const colLetter = String.fromCharCode('A'.charCodeAt(0) + colIndex);
+    const colLetter = columnLetter(colIndex);
     return {
       range: sheetRange(colLetter, colLetter, rowNumber),
       values: [[value ?? '']],
@@ -100,6 +108,7 @@ export async function updateSale(rowNumber, saleData) {
     verkaufdatum: saleData.verkaufdatum,
     verkaufpreis: saleData.verkaufpreis,
     verkaufplatform: saleData.verkaufplatform,
+    zahlungsart: saleData.zahlungsart,
   });
 }
 

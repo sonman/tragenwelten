@@ -1,4 +1,4 @@
-import { CONFIG, FIELD_LABELS, STATUS_COLORS, STATUS_ORDER } from './config.js';
+import { CONFIG, FIELD_LABELS, PAYMENT_METHODS, STATUS_COLORS, STATUS_ORDER } from './config.js';
 import { signIn, isConfigured } from './auth.js';
 import {
   getAllItems,
@@ -227,7 +227,8 @@ function renderDetails() {
     fields.push(
       renderField(FIELD_LABELS.verkaufdatum, formatDateDisplay(item.verkaufdatum)),
       renderField(FIELD_LABELS.verkaufpreis, formatEuro(item.verkaufpreis)),
-      renderField(FIELD_LABELS.verkaufplatform, item.verkaufplatform || '—')
+      renderField(FIELD_LABELS.verkaufplatform, item.verkaufplatform || '—'),
+      renderField(FIELD_LABELS.zahlungsart, item.zahlungsart || '—')
     );
   }
 
@@ -271,6 +272,16 @@ function resetAddForm() {
   els.formAdd.reset();
   els.formAdd.elements.kaufdatum.value = todayIso();
   els.formAdd.elements.kaufplatform.value = 'Kleinanzeigen';
+}
+
+function fillPaymentMethods() {
+  const select = els.formSell.elements.zahlungsart;
+  PAYMENT_METHODS.forEach((method) => {
+    const option = document.createElement('option');
+    option.value = method;
+    option.textContent = method;
+    select.appendChild(option);
+  });
 }
 
 function resetSellForm() {
@@ -358,6 +369,7 @@ async function handleAddItem(event) {
       verkaufdatum: '',
       verkaufpreis: '',
       verkaufplatform: '',
+      zahlungsart: '',
       showapp: 'x',
     };
 
@@ -422,14 +434,15 @@ async function handleSellItem(event) {
   const verkaufdatum = isoToGermanDate(String(formData.get('verkaufdatum') || ''));
   const verkaufpreis = toGermanDecimal(formData.get('verkaufpreis'));
   const verkaufplatform = String(formData.get('verkaufplatform') || '').trim();
+  const zahlungsart = String(formData.get('zahlungsart') || '').trim();
 
-  if (!verkaufdatum || !verkaufpreis || !verkaufplatform) {
+  if (!verkaufdatum || !verkaufpreis || !verkaufplatform || !PAYMENT_METHODS.includes(zahlungsart)) {
     showToast('Bitte alle Verkaufsfelder ausfüllen.');
     return;
   }
 
   await withLoading(async () => {
-    await updateSale(item._row, { verkaufdatum, verkaufpreis, verkaufplatform });
+    await updateSale(item._row, { verkaufdatum, verkaufpreis, verkaufplatform, zahlungsart });
     closeModal(els.modalSell);
     state.pendingStatus = null;
     await refreshItems();
@@ -475,6 +488,7 @@ function registerServiceWorker() {
 
 bindEvents();
 buildStatusFilters();
+fillPaymentMethods();
 resetAddForm();
 resetSellForm();
 registerServiceWorker();
