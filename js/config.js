@@ -62,7 +62,7 @@ export const CONFIG = {
   get SHEET_NAME() {
     return fromStorage('tragenwelt_sheet_name', defaults.SHEET_NAME);
   },
-  SCOPES: defaults.SCOPES,
+  SCOPES: `${defaults.SCOPES} https://www.googleapis.com/auth/userinfo.email`,
 };
 
 export const COLUMNS = [

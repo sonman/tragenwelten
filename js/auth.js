@@ -1,10 +1,36 @@
 import { CONFIG } from './config.js';
 
+const LOGIN_HINT_KEY = 'tragenwelt_login_hint';
+
 let tokenClient = null;
+let tokenClientHint = '';
 let accessToken = null;
 let tokenExpiresAt = 0;
 let pendingResolve = null;
 let pendingReject = null;
+
+function readLoginHint() {
+  const value = localStorage.getItem(LOGIN_HINT_KEY);
+  return value && value.includes('@') ? value.trim() : '';
+}
+
+function storeLoginHint(email) {
+  if (!email || !email.includes('@')) return;
+  localStorage.setItem(LOGIN_HINT_KEY, email.trim());
+}
+
+async function rememberAccount(token) {
+  try {
+    const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) return;
+    const profile = await response.json();
+    storeLoginHint(profile.email);
+  } catch {
+    // Sign-in already succeeded. The hint only skips the account chooser next time.
+  }
+}
 
 function waitForGis() {
   return new Promise((resolve, reject) => {
@@ -28,11 +54,14 @@ function waitForGis() {
 }
 
 function initTokenClient() {
-  if (tokenClient) return;
+  const loginHint = readLoginHint();
+  if (tokenClient && tokenClientHint === loginHint) return;
 
+  tokenClientHint = loginHint;
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: CONFIG.CLIENT_ID,
     scope: CONFIG.SCOPES,
+    ...(loginHint ? { login_hint: loginHint } : {}),
     callback: (response) => {
       if (response.error) {
         pendingReject?.(new Error(response.error));
@@ -44,6 +73,8 @@ function initTokenClient() {
       accessToken = response.access_token;
       const expiresIn = Number(response.expires_in || 3600);
       tokenExpiresAt = Date.now() + expiresIn * 1000 - 60_000;
+      const grantedEmail = !response.scope || /email/.test(response.scope);
+      if (grantedEmail) rememberAccount(accessToken);
       pendingResolve?.(accessToken);
       pendingResolve = null;
       pendingReject = null;
@@ -62,7 +93,11 @@ export async function signIn(forcePrompt = false) {
   return new Promise((resolve, reject) => {
     pendingResolve = resolve;
     pendingReject = reject;
-    tokenClient.requestAccessToken({ prompt: forcePrompt ? 'consent' : '' });
+    const loginHint = readLoginHint();
+    tokenClient.requestAccessToken({
+      prompt: forcePrompt ? 'consent' : '',
+      ...(loginHint ? { hint: loginHint } : {}),
+    });
   });
 }
 
